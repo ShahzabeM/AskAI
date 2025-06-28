@@ -12,7 +12,19 @@ from typing import List                    # Type hinting for lists
 # --- DATABASE CONFIGURATION ---
 
 # Connection string to local Postgres database
-DATABASE_URL = "postgresql://zabe:@localhost:5432/askai"
+# DATABASE_URL = "postgresql://zabe:@localhost:5432/askai"
+
+from urllib.parse import quote_plus
+load_dotenv() 
+
+
+DATABASE_USER = os.getenv("DATABASE_USER")  # e.g., 'postgres'
+DATABASE_PASSWORD = quote_plus(os.getenv("DATABASE_PASSWORD"))  # Encodes special chars safely
+DATABASE_HOST = os.getenv("DATABASE_HOST")  # e.g., 'askai-db-server.postgres.database.azure.com'
+DATABASE_PORT = os.getenv("DATABASE_PORT", "5432")
+DATABASE_NAME = os.getenv("DATABASE_NAME")  # e.g., 'askai'
+
+DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 
 # Create DB engine and session factory
 engine = create_engine(DATABASE_URL)
